@@ -4,6 +4,7 @@ const app = express();
 const multer = require('multer');
 const { BlobServiceClient } = require('@azure/storage-blob');
 const RabbitMQ = require('./rabbitmq');
+require('dotenv').config();
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SG_MAIL_API_KEY);
 
