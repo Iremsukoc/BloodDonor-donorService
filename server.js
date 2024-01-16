@@ -19,6 +19,26 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 
+const allowedOrigins = [
+  'https://blooddonor-api-gateway-iremsu.onrender.com',
+  'https://blooddonor-frontend-iremsu.onrender.com',
+  'https://blooddonor-donorservice-iremsu.onrender.com'
+];
+
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
+
+app.use(cors(corsOptions));
+app.use(express.json());
+
 app.post('/api/insert-donor', upload.single('image'), async (req, res) => {
   const { donorName, bloodType, city, town, phoneNumber, userId } = req.body;
 
