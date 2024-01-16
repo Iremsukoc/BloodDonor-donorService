@@ -19,16 +19,6 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 
-const allowedOrigins = { origin: [
-  'https://blooddonor-api-gateway-iremsu.onrender.com',
-  'https://blooddonor-frontend-iremsu.onrender.com',
-  'https://blooddonor-donorservice-iremsu.onrender.com' ]
-};
-
-
-app.use(cors());
-app.use(express.json());
-
 app.post('/api/insert-donor', upload.single('image'), async (req, res) => {
   const { donorName, bloodType, city, town, phoneNumber, userId } = req.body;
 
@@ -190,13 +180,13 @@ app.post("/api/fetch-donors-with-name", async (req, res) => {
 
 app.post('/api/set-blood-units', async (req, res) => {
   try {
-    const { donorName, unitsOfBlood } = req.body;
+    const { iddonor, unitsOfBlood } = req.body;
 
-    if (!donorName || !unitsOfBlood) {
-      return res.status(400).json({ error: 'donorName and unitsOfBlood are required.' });
+    if (!iddonor || !unitsOfBlood) {
+      return res.status(400).json({ error: 'iddonor and unitsOfBlood are required.' });
     }
 
-    await mysqlUtils.setBloodUnits(donorName, unitsOfBlood);
+    await mysqlUtils.setBloodUnits(iddonor, unitsOfBlood);
 
     res.json({ success: true, message: 'Blood units set successfully.' });
   } catch (error) {
@@ -271,4 +261,3 @@ const sendEmail = async (to) => {
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
-
