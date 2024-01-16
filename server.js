@@ -180,13 +180,13 @@ app.post("/api/fetch-donors-with-name", async (req, res) => {
 
 app.post('/api/set-blood-units', async (req, res) => {
   try {
-    const { iddonor, unitsOfBlood } = req.body;
+    const { donorName, unitsOfBlood } = req.body;
 
-    if (!iddonor || !unitsOfBlood) {
-      return res.status(400).json({ error: 'iddonor and unitsOfBlood are required.' });
+    if (!donorName || !unitsOfBlood) {
+      return res.status(400).json({ error: 'donorName and unitsOfBlood are required.' });
     }
 
-    await mysqlUtils.setBloodUnits(iddonor, unitsOfBlood);
+    await mysqlUtils.setBloodUnits(donorName, unitsOfBlood);
 
     res.json({ success: true, message: 'Blood units set successfully.' });
   } catch (error) {

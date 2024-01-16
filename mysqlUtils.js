@@ -243,23 +243,21 @@ const fetchDonorsName = async (userId, donorName) => {
 };
 
 
-const setBloodUnits = async (iddonor, unitsOfBlood) => {
+const setBloodUnits = async (donorName, unitsOfBlood) => {
   try {
-    const query = 'UPDATE donor SET units_of_blood = ? WHERE iddonor = ?';
-    const result = await pool.query(query, [unitsOfBlood, iddonor]);
+    const query = 'UPDATE donor SET units_of_blood = units_of_blood + ? WHERE donor_name = ? LIMIT 1';
+    const result = await pool.query(query, [unitsOfBlood, donorName]);
 
     if (result.affectedRows === 0) {
       throw new Error('Donor not found or blood units not updated.');
     }
 
-    console.log(`Blood units updated for donor ${iddonor}`);
+    console.log(`Blood units updated for donor ${donorName}`);
   } catch (error) {
     console.error('Error updating blood units:', error);
     throw error;
   }
 };
-
-
 
 
 const searchBlood = async (city, town, bloodType, units) => {
